@@ -16,7 +16,7 @@ with st.sidebar:
     st.write("\n\nCopyright © Ihza Zhafran")
 
 # Download file from Google Drive
-st.title("Dashboard Analytic of IG Content Performance (Last 30 Days)")
+st.title("Content Performance Dashboard")
 
 file_url = "https://drive.google.com/uc?id=1SxBOsTOf-x4SCJOVbScfuGntCGB5tjjH"
 output_file = "ig_data.xlsx"
@@ -56,7 +56,7 @@ with col2:
         df_pie,
         labels=df_pie.index,
         autopct="%1.1f%%",
-        colors=[color_dict[t] for t in df_pie.index]  # Matching colors from bar chart
+        colors=[color_dict[t] for t in df_pie.index]
     )
     st.pyplot(fig)
 
