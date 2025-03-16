@@ -53,21 +53,24 @@ df_grouped_total = df_filtered.groupby(["Half"])[["Follows"]].sum().reset_index(
 # 1. How Many Views and Effective are the CTAs?
 st.subheader("1. How Many Views and Effective are the CTAs?")
 
-# Interaction Rate Chart
-st.write("### Interaction Rate")
-fig, ax = plt.subplots(figsize=(8, 4))
-sns.barplot(x="Half", y="Interaction Rate", data=df_grouped_avg, palette="viridis", ax=ax)
-plt.xticks(rotation=0)
-plt.ylabel("Interaction Rate")
-st.pyplot(fig)
+# Buat layout dua kolom
+col1, col2 = st.columns(2)
 
-# Views Chart
-st.write("### Average Views")
-fig, ax = plt.subplots(figsize=(8, 4))
-sns.barplot(x="Half", y="Views", data=df_grouped_avg, palette="Blues", ax=ax)
-plt.xticks(rotation=0)
-plt.ylabel("Average Views")
-st.pyplot(fig)
+with col1:
+    st.write("### Interaction Rate")
+    fig, ax = plt.subplots(figsize=(5, 4))
+    sns.barplot(x="Half", y="Interaction Rate", data=df_grouped_avg, palette="viridis", ax=ax)
+    plt.xticks(rotation=0)
+    plt.ylabel("Interaction Rate")
+    st.pyplot(fig)
+
+with col2:
+    st.write("### Average Views")
+    fig, ax = plt.subplots(figsize=(5, 4))
+    sns.barplot(x="Half", y="Views", data=df_grouped_avg, palette="Blues", ax=ax)
+    plt.xticks(rotation=0)
+    plt.ylabel("Average Views")
+    st.pyplot(fig)
 
 # 2. How Interesting is the Content?
 st.subheader("2. How Interesting is the Content for the Audience?")
@@ -78,7 +81,7 @@ plt.ylabel("Avg Watch Time (Seconds)")
 st.pyplot(fig)
 
 # 3. How Many Follow After Watching Content?
-st.subheader("3. How Many Follow After Watching Content?")
+st.subheader("3. How Many Follows After Watching Content?")
 fig, ax = plt.subplots(figsize=(8, 4))
 sns.barplot(x="Half", y="Follows", data=df_grouped_total, palette="magma", ax=ax)
 plt.xticks(rotation=0)
