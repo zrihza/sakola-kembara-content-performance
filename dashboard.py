@@ -19,8 +19,8 @@ with st.sidebar:
     st.markdown("[GitHub](https://github.com/zrihza)")
     st.write("\n\nCopyright © Ihza Zhafran")
 
-# Load Data
-df["Publish time"] = pd.to_datetime(df["Publish time"], format="%d/%m/%Y %H:%M")
+# Load Data dengan Format Datetime yang Benar
+df["Publish time"] = pd.to_datetime(df["Publish time"], format="%m/%d/%Y %H:%M")
 
 # Filter hanya untuk "IG reel"
 df = df[df["Post type"] == "IG reel"]
@@ -28,6 +28,7 @@ df = df[df["Post type"] == "IG reel"]
 # Hapus entri dengan nilai "None"
 df = df.replace("None", pd.NA).dropna()
 
+# Buat kolom minggu dan pembagian menjadi 2 periode (2 minggu pertama vs 2 minggu terakhir)
 df["Week"] = df["Publish time"].dt.strftime("%Y-%U")  # Format: Year-Week
 df["Half"] = df["Week"].rank(method="dense", ascending=True).apply(lambda x: "First 2 Weeks" if x <= 2 else "Last 2 Weeks")
 
@@ -44,7 +45,7 @@ else:
 df_filtered["Interaction Rate"] = df_filtered["Interactions"] / df_filtered["Views"]
 
 # Grouping untuk 2 minggu pertama vs 2 minggu terakhir
-df_grouped_avg = df_filtered.groupby(["Half"])[["Views", "Interaction Rate"]].mean().reset_index()
+df_grouped_avg = df_filtered.groupby(["Half"])[["Views", "Interaction Rate", "Avg Watch Time (Seconds)"]].mean().reset_index()
 df_grouped_total = df_filtered.groupby(["Half"])[["Follows"]].sum().reset_index()  # TOTAL Follows
 
 # --- Visualization ---
