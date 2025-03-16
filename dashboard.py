@@ -18,7 +18,7 @@ with st.sidebar:
 st.title("Content Performance Dashboard")
 
 # Read data
-df = pd.read_excel("ig_data.csv", sheet_name="bi-weekly")
+df = pd.read_excel("ig_data.xlsx", sheet_name="bi-weekly")
 
 # Data processing
 df["Interactions"] = df["Likes"] + df["Shares"] + df["Comments"] + df["Saves"]
