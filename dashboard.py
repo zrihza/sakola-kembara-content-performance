@@ -18,10 +18,16 @@ with st.sidebar:
     st.markdown("[LinkedIn](https://www.linkedin.com/in/ihza-zhafran-010a0b21a/)")
     st.markdown("[GitHub](https://github.com/zrihza)")
     st.write("\n\nCopyright © Ihza Zhafran")
-    
-    
+
 # Load Data
 df["Publish time"] = pd.to_datetime(df["Publish time"], format="%d/%m/%Y %H:%M")
+
+# Filter hanya untuk "IG reel"
+df = df[df["Post type"] == "IG reel"]
+
+# Hapus entri dengan nilai "None"
+df = df.replace("None", pd.NA).dropna()
+
 df["Week"] = df["Publish time"].dt.strftime("%Y-%U")  # Format: Year-Week
 df["Half"] = df["Week"].rank(method="dense", ascending=True).apply(lambda x: "First 2 Weeks" if x <= 2 else "Last 2 Weeks")
 
@@ -34,29 +40,46 @@ if selected_talent == "All":
 else:
     df_filtered = df[df["talent"] == selected_talent]
 
-# Grouping untuk perbandingan 2 minggu pertama vs 2 minggu terakhir
-df_grouped = df_filtered.groupby(["Half"])[["Views", "Interactions", "Avg Watch Time (Seconds)", "Follows"]].mean().reset_index()
+# Hitung Interaction Rate
+df_filtered["Interaction Rate"] = df_filtered["Interactions"] / df_filtered["Views"]
+
+# Grouping untuk 2 minggu pertama vs 2 minggu terakhir
+df_grouped_avg = df_filtered.groupby(["Half"])[["Views", "Interaction Rate"]].mean().reset_index()
+df_grouped_total = df_filtered.groupby(["Half"])[["Follows"]].sum().reset_index()  # TOTAL Follows
 
 # --- Visualization ---
 
-# 1. How Effective is CTA?
-st.subheader("1. How Effective is CTA?")
+# 1. How Many Views and Effective are the CTAs?
+st.subheader("1. How Many Views and Effective are the CTAs?")
+
+# Interaction Rate Chart
+st.write("### Interaction Rate")
 fig, ax = plt.subplots(figsize=(8, 4))
-df_grouped.plot(x="Half", y=["Views", "Interactions"], kind="bar", ax=ax, color=["#1f77b4", "#ff7f0e"])
+sns.barplot(x="Half", y="Interaction Rate", data=df_grouped_avg, palette="viridis", ax=ax)
 plt.xticks(rotation=0)
-plt.ylabel("Count")
+plt.ylabel("Interaction Rate")
+st.pyplot(fig)
+
+# Views Chart
+st.write("### Average Views")
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.barplot(x="Half", y="Views", data=df_grouped_avg, palette="Blues", ax=ax)
+plt.xticks(rotation=0)
+plt.ylabel("Average Views")
 st.pyplot(fig)
 
 # 2. How Interesting is the Content?
 st.subheader("2. How Interesting is the Content for the Audience?")
 fig, ax = plt.subplots(figsize=(8, 4))
-sns.barplot(x="Half", y="Avg Watch Time (Seconds)", data=df_grouped, palette="viridis", ax=ax)
+sns.barplot(x="Half", y="Avg Watch Time (Seconds)", data=df_grouped_avg, palette="coolwarm", ax=ax)
 plt.xticks(rotation=0)
+plt.ylabel("Avg Watch Time (Seconds)")
 st.pyplot(fig)
 
 # 3. How Many Follow After Watching Content?
 st.subheader("3. How Many Follow After Watching Content?")
 fig, ax = plt.subplots(figsize=(8, 4))
-sns.barplot(x="Half", y="Follows", data=df_grouped, palette="coolwarm", ax=ax)
+sns.barplot(x="Half", y="Follows", data=df_grouped_total, palette="magma", ax=ax)
 plt.xticks(rotation=0)
+plt.ylabel("Total Follows")  # Menampilkan TOTAL Follows, bukan rata-rata
 st.pyplot(fig)
