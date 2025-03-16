@@ -68,7 +68,6 @@ with col2:
     st.write("### Average Views")
     fig, ax = plt.subplots(figsize=(5, 4))
     sns.barplot(x="Half", y="Views", data=df_grouped_avg, palette="Blues", ax=ax)
-    ax.set_ylim(0, 200000)  # Set skala maksimum menjadi 200,000
     ax.set_ylabel("Average Views")
     ax.set_xlabel("")
     st.pyplot(fig)
