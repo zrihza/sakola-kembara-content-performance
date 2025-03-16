@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import gdown
 
 # Set page title and layout
 st.set_page_config(page_title="Content Performance Dashboard", layout="wide")
@@ -11,19 +10,15 @@ st.set_page_config(page_title="Content Performance Dashboard", layout="wide")
 with st.sidebar:
     st.image("https://media.licdn.com/dms/image/C5603AQEweWGGp1ovNA/profile-displayphoto-shrink_400_400/0/1632043804563?e=1712188800&v=beta&t=GF5DzzOih1xnd7sWj6aRDG6X1kR5FpNBLKVuG1OaHRw", width=150)
     st.markdown("[LinkedIn](https://www.linkedin.com/in/ihza-zhafran-010a0b21a/)")
-    st.image("https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png", width=50)
+    st.image("Marketing.png", width=50)
     st.markdown("[GitHub](https://github.com/zrihza)")
     st.write("\n\nCopyright © Ihza Zhafran")
 
 # Download file from Google Drive
-st.title("Content Performance Dashboard")  # Perubahan judul dashboard
-
-file_url = "https://drive.google.com/uc?id=1SxBOsTOf-x4SCJOVbScfuGntCGB5tjjH"
-output_file = "ig_data.xlsx"
-gdown.download(file_url, output_file, quiet=False)
+st.title("Content Performance Dashboard")
 
 # Read data
-df = pd.read_excel(output_file, sheet_name="bi-weekly")
+df = pd.read_excel("ig_data.csv", sheet_name="bi-weekly")
 
 # Data processing
 df["Interactions"] = df["Likes"] + df["Shares"] + df["Comments"] + df["Saves"]
