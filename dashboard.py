@@ -67,7 +67,7 @@ with col1:
 with col2:
     st.write("### Average Views")
     fig, ax = plt.subplots(figsize=(5, 4))
-    sns.barplot(x="Half", y="Views", data=df_grouped_avg, palette="Blues", ax=ax)
+    sns.barplot(x="Half", y="Views", data=df_grouped_avg, palette="viridis", ax=ax)
     ax.set_ylabel("Average Views")
     ax.set_xlabel("")
     st.pyplot(fig)
@@ -75,7 +75,7 @@ with col2:
 # 2. How Interesting is the Content?
 st.subheader("2. How Interesting is the Content for the Audience?")
 fig, ax = plt.subplots(figsize=(8, 4))
-sns.barplot(x="Half", y="Avg Watch Time (Seconds)", data=df_grouped_avg, palette="coolwarm", ax=ax)
+sns.barplot(x="Half", y="Avg Watch Time (Seconds)", data=df_grouped_avg, palette="plasma", ax=ax)
 ax.set_ylabel("Avg Watch Time (Seconds)")
 ax.set_xlabel("")
 st.pyplot(fig)
