@@ -82,7 +82,7 @@ plt.ylabel("Avg Watch Time (Seconds)")
 st.pyplot(fig)
 
 # 3. How Many Follow After Watching Content?
-st.subheader("3. How Many Follows After Watching Content?")
+st.subheader("3. How Many Follow After Watching Content?")
 fig, ax = plt.subplots(figsize=(8, 4))
 sns.barplot(x="Half", y="Follows", data=df_grouped_total, palette="magma", ax=ax)
 plt.xticks(rotation=0)
